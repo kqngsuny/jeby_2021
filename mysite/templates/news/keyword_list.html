@@ -1,0 +1,51 @@
+{% extends 'base_news.html' %}
+
+{% load static %}
+
+{% block custom_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'news/css/keyword_list.css' %}" />
+{% endblock custom_css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex flex-row-reverse mb-2">
+                <a href="{% url 'news:keyword_create' %}" type="button" class="btn btn-primary">등록</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 30%">관리명</th>
+                            <th scope="col">키워드</th>
+                            <th scope="col" style="width: 10%">메일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for keyword in keyword_list %}
+                        <tr>
+                            <td scope="row">
+                                <a href="{% url 'news:keyword_update' keyword.id %}">{{ keyword.title }}</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'news:keyword_update' keyword.id %}">{{ keyword.content }}</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'news:keyword_update' keyword.id %}">{{ keyword.mailing }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'news/js/keyword_list.js' %}"></script>
+{% endblock script %}

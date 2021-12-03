@@ -1,0 +1,14 @@
+a,
+a:hover {
+    text-decoration: none;
+    color: #6c757d;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+#btn-list:hover {
+    background: #ffffff;
+    color: #80808f;
+}

@@ -1,0 +1,79 @@
+{% extends 'base_news.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block custom_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'news/css/keyword_form.css' %}" />
+{% endblock custom_css %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">관리명</label>
+                    <input type="text" class="form-control" id="title" name="title"
+                        value="{{ form.title.value|default_if_none:'' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">키워드</label>
+                    <input class="form-control" id="content" name="content"
+                        value="{{ form.content.value|default_if_none:'' }}">
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="mailing" name="mailing"
+                        {% if form.mailing.value %}checked{% endif %}>
+                    <label class="form-check-label" for="mailing">
+                        메일발송
+                    </label>
+                </div>
+                <div class="float-end">
+                    <a href="{% url 'news:keyword_list' %}" type="button" class="btn btn-outline-secondary"
+                        id="btn-list">목록</a>
+                    <button type="sumit" class="btn btn-primary">저장</button>
+                    {% if keyword %}
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteKeywordModal">삭제
+                    </button>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if keyword %}
+<div class="modal fade" id="deleteKeywordModal" tabindex="-1" aria-labelledby="deleteKeywordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'news:keyword_delete' keyword.id %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">삭제하기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    정말 삭제하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {% if keyword %}
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+
+{% block script %}
+{{ block.super }}
+<script src="{% static 'news/js/keyword_form.js' %}"></script>
+{% endblock script %}
